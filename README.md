@@ -12,6 +12,8 @@
   </a>
 </div>
 
+---
+
 # Running locally
 
 ### Requirements

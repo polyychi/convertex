@@ -1,21 +1,23 @@
 <script setup>
 import '@picocss/pico'
 import { vMaska } from 'maska/vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { Icon } from '@iconify/vue'
 import { useMainStore } from '@/stores/store'
 import { storeToRefs } from 'pinia'
 
 const main = useMainStore()
-const { fromInput } = storeToRefs(main)
-const { toInput } = storeToRefs(main)
-const { baseCurrency } = storeToRefs(main)
-const { quoteCurrency } = storeToRefs(main)
-const { adjustmentRate } = storeToRefs(main)
-const { conversionRate } = storeToRefs(main)
+const { fromAmount, toAmount, baseCurrency, quoteCurrency, adjustmentRate, conversionRate } =
+  storeToRefs(main)
+const fromInput = ref()
 const currencies = ref()
 let conversionRates
+
+onMounted(() => {
+  fromInput.value.focus()
+  fromInput.value.select()
+})
 
 const FXR_BASE_URL = 'https://api.fxratesapi.com'
 const FXR_ENDPOINTS = {
@@ -54,16 +56,16 @@ const calculateConversionRate = () => {
 }
 
 const updateToAmount = () => {
-  toInput.value = (
-    fromInput.value *
+  toAmount.value = (
+    fromAmount.value *
     conversionRate.value *
     (1 + adjustmentRate.value / 100)
   ).toFixed(2)
 }
 
 const updateFromAmount = () => {
-  fromInput.value = (
-    toInput.value *
+  fromAmount.value = (
+    toAmount.value *
     ((1 / conversionRate.value) * (1 + adjustmentRate.value / 100))
   ).toFixed(2)
 }
@@ -92,11 +94,17 @@ const swapCurrencies = () => {
         </option>
       </select>
       <input
-        v-model="fromInput"
+        v-model="fromAmount"
+        ref="fromInput"
         v-maska
         data-maska="0.99"
         data-maska-tokens="0:\d:multiple|9:\d:optional"
         @keyup="updateToAmount"
+        @focus="
+          (event) => {
+            event.target.select()
+          }
+        "
         class="currency-amount-input"
       />
     </div>
@@ -124,11 +132,16 @@ const swapCurrencies = () => {
         </option>
       </select>
       <input
-        v-model="toInput"
+        v-model="toAmount"
         v-maska
         data-maska="0.99"
         data-maska-tokens="0:\d:multiple|9:\d:optional"
         @keyup="updateFromAmount"
+        @focus="
+          (event) => {
+            event.target.select()
+          }
+        "
         class="currency-amount-input"
       />
     </div>
@@ -143,6 +156,11 @@ const swapCurrencies = () => {
       data-maska="-0.9"
       data-maska-tokens="-:\-:optional|0:\d|9:\d:optional"
       @keyup="updateToAmount"
+      @focus="
+        (event) => {
+          event.target.select()
+        }
+      "
     />
     <p>%</p>
   </div>

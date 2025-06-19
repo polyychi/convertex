@@ -7,14 +7,30 @@
   
   <p>Easily convert between over 200 fiat and cryptocurrencies.</p>
   <img src="https://github.com/user-attachments/assets/1dc70b59-40fd-4f5d-ab88-74d7f34fb606"><br>
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/convertex/">
-    <img src="https://github.com/user-attachments/assets/ff9b37f1-0431-4b71-9690-2473c4586194" height="50px" width="auto">
-  </a>
 </div>
 
 ---
 
-# Running locally
+# Browser Compatibility
+
+This extension is compatible with the following browsers. Please note its availability on official stores.
+
+| Browser        | Compatibility            | Store Availability               | How to Use                                                                                 |
+| :------------- | :----------------------- | :------------------------------- | :------------------------------------------------------------------------------------------|
+| Mozilla Firefox| ✅ Fully Supported       | ✅ Available on Firefox Add-ons | [Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/convertex/)  |
+| Google Chrome  | ✅ Fully Supported       | 🚫 Not on Web Store             | Load as [Unpacked Extension](#local-installation)                                          |
+| Microsoft Edge | ✅ Fully Supported       | 🚫 Not on Edge Add-ons          | Load as [Unpacked Extension](#local-installation)                                          |
+| Brave Browser  | ✅ Expected to Work      | 🚫 (Uses Chrome Web Store)      | Load as [Unpacked Extension](#local-installation)                                          |
+
+# Local Installation
+
+1. Download the zipped extension from [Releases](https://github.com/polyychi/ConvertEx/releases).
+2. Load as unpacked extension:
+    * Open your browser and navigate to `chrome://extensions` (Chrome/Brave) or `edge://extensions` (Edge).
+    * Enable "Developer Mode".
+    * Drag and drop the `.zip` into the extensions page.
+
+# Building Locally
 
 ### Requirements
 
@@ -50,4 +66,3 @@ npx vite build
 ### Loading as a browser extension
 
 After building the application, the `dist/` folder contains all necessary files to load the extension into your browser.
-

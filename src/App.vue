@@ -2,79 +2,21 @@
 import '@picocss/pico'
 import { vMaska } from 'maska/vue'
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { Icon } from '@iconify/vue'
 import { useMainStore } from '@/stores/store'
 import { storeToRefs } from 'pinia'
 
 const main = useMainStore()
-const { fromAmount, toAmount, baseCurrency, quoteCurrency, adjustmentRate, conversionRate } =
+const { fromAmount, toAmount, baseCurrency, quoteCurrency, adjustmentRate, currencies } =
   storeToRefs(main)
-const fromInput = ref()
-const currencies = ref()
-let conversionRates
+const fromAmountInput = ref()
 
 onMounted(() => {
-  fromInput.value.focus()
-  fromInput.value.select()
+  fromAmountInput.value.focus()
+  fromAmountInput.value.select()
+  main.updateRatesIfStale()
+  main.updateCurrencies()
 })
-
-const FXR_BASE_URL = 'https://api.fxratesapi.com'
-const FXR_ENDPOINTS = {
-  LATEST: '/latest',
-  CURRENCIES: '/currencies'
-}
-
-axios(`${FXR_BASE_URL}${FXR_ENDPOINTS.CURRENCIES}`, {
-  params: {
-    api_key: import.meta.env.VITE_FXR_API_KEY
-  }
-})
-  .then((response) => {
-    currencies.value = Object.values(response.data)
-  })
-  .catch((error) => console.error(`Failed to fetch currencies: ${error}`))
-
-const fetchConversionRates = () =>
-  axios(`${FXR_BASE_URL}${FXR_ENDPOINTS.LATEST}`, {
-    params: {
-      api_key: import.meta.env.VITE_FXR_API_KEY
-    }
-  })
-    .then((response) => {
-      conversionRates = response.data.rates
-      calculateConversionRate()
-    })
-    .catch((error) => console.error(`Failed to fetch conversion rates: ${error}`))
-
-fetchConversionRates()
-
-setInterval(fetchConversionRates, 86400000)
-
-const calculateConversionRate = () => {
-  conversionRate.value = conversionRates[quoteCurrency.value] / conversionRates[baseCurrency.value]
-}
-
-const updateToAmount = () => {
-  toAmount.value = (
-    fromAmount.value *
-    conversionRate.value *
-    (1 + adjustmentRate.value / 100)
-  ).toFixed(2)
-}
-
-const updateFromAmount = () => {
-  fromAmount.value = (
-    toAmount.value *
-    ((1 / conversionRate.value) * (1 + adjustmentRate.value / 100))
-  ).toFixed(2)
-}
-
-const swapCurrencies = () => {
-  ;[baseCurrency.value, quoteCurrency.value] = [quoteCurrency.value, baseCurrency.value]
-  conversionRate.value = 1 / conversionRate.value
-  updateToAmount()
-}
 </script>
 
 <template>
@@ -84,8 +26,7 @@ const swapCurrencies = () => {
         v-model="baseCurrency"
         @change="
           () => {
-            calculateConversionRate()
-            updateToAmount()
+            main.updateToAmount()
           }
         "
       >
@@ -95,11 +36,11 @@ const swapCurrencies = () => {
       </select>
       <input
         v-model="fromAmount"
-        ref="fromInput"
+        ref="fromAmountInput"
         v-maska
         data-maska="0.99"
         data-maska-tokens="0:\d:multiple|9:\d:optional"
-        @keyup="updateToAmount"
+        @keyup="main.updateToAmount"
         @focus="
           (event) => {
             event.target.select()
@@ -114,7 +55,7 @@ const swapCurrencies = () => {
           icon="material-symbols:compare-arrows-rounded"
           width="26"
           height="26"
-          @click="swapCurrencies"
+          @click="main.swapCurrencies"
       /></span>
     </div>
     <div class="input-block">
@@ -122,8 +63,7 @@ const swapCurrencies = () => {
         v-model="quoteCurrency"
         @change="
           () => {
-            calculateConversionRate()
-            updateFromAmount()
+            main.updateFromAmount()
           }
         "
       >
@@ -136,7 +76,7 @@ const swapCurrencies = () => {
         v-maska
         data-maska="0.99"
         data-maska-tokens="0:\d:multiple|9:\d:optional"
-        @keyup="updateFromAmount"
+        @keyup="main.updateFromAmount"
         @focus="
           (event) => {
             event.target.select()
@@ -155,7 +95,7 @@ const swapCurrencies = () => {
       v-maska
       data-maska="-0.9"
       data-maska-tokens="-:\-:optional|0:\d|9:\d:optional"
-      @keyup="updateToAmount"
+      @keyup="main.updateToAmount"
       @focus="
         (event) => {
           event.target.select()

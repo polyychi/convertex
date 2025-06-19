@@ -114,8 +114,8 @@ const swapCurrencies = () => {
         v-model="quoteCurrency"
         @change="
           () => {
-            calculateConversionRate
-            updateFromAmount
+            calculateConversionRate()
+            updateFromAmount()
           }
         "
       >

@@ -1,15 +1,21 @@
 <div align="center">
   <p>
-    <img src="https://github.com/user-attachments/assets/0ca1c6ac-8ab9-404a-89cc-ede698ceab2d" width="72">
+    <img src="./assets/logo.png" alt="ConvertEx logo" width="72">
   </p>
   
   <h1>ConvertEx</h1>
   
-  <p>Easily convert between over 200 fiat and cryptocurrencies.</p>
-  <img src="https://github.com/user-attachments/assets/1dc70b59-40fd-4f5d-ab88-74d7f34fb606"><br>
+  <p>Easily convert between over 200 fiat and cryptocurrencies ad-free.</p>
+  <img src="./assets/demo.gif" alt="ConvertEx demo"><br>
 </div>
 
 ---
+
+# Technical Highlights
+
+* **Reactive State Management:** Uses Pinia to locally store last used currency pair and input value, alongside caching the last fetched exchange rate for instant conversion.
+* **Minimalist Styling:** Leverages Pico CSS to build a lightweight and sleek UI while keeping build size at around 200 KB.
+* **Efficient Algorithms:** Minimizes API latency by pre-fetching base rates and calculating cross-rates locally via triangulation, allowing for O(1) instantaneous lookups for all currency pairs without additional network requests, reducing latency and API calls.
 
 # Browser Compatibility
 
@@ -40,21 +46,7 @@ This extension is compatible with the following browsers. Please note its availa
 ### Install project dependencies
 
 ```sh
-npm i @iconify/vue@4.1.1
-npm i @picocss/pico@1.5.10
-npm i @rushstack/eslint-patch@1.3.2
-npm i @vitejs/plugin-vue@4.3.1
-npm i @vue/eslint-config-prettier@8.0.0
-npm i @vueuse/core@10.4.1
-npm i axios@1.4.0
-npm i eslint@8.46.0
-npm i eslint-plugin-vue@9.16.1
-npm i maska@2.1.10
-npm i pinia@2.1.6
-npm i prettier@3.0.0
-npm i vite@4.4.9
-npm i vue@3.3.4
-npm i vue-router@4.2.4
+npm install
 ```
 
 ### Build script

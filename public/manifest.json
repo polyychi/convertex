@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "ConvertEx",
-    "version": "1.7.0",
+    "version": "1.7.1",
     "author": "polyychi",
     "description": "Easily convert between over 200 fiat and cryptocurrencies.",
 

@@ -71,9 +71,9 @@ export const useMainStore = defineStore('main', {
     },
     updateFromAmount() {
       this.fromAmount = (
-        this.toAmount *
-        (1 / this.conversionRate) *
-        (1 - this.adjustmentRate / 100)
+        this.toAmount /
+        this.conversionRate /
+        (1 + this.adjustmentRate / 100)
       ).toFixed(2)
     },
     swapCurrencies() {

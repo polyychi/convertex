@@ -6,6 +6,7 @@
   <h1>ConvertEx</h1>
   
   <p>Easily convert between over 200 fiat and cryptocurrencies ad-free.</p>
+  <p>Pop-up toggles using the hotkey <code>Ctrl+Shift+F</code> on Windows or <code>Command+shift+F</code> on Mac</p>
   <img src="./assets/demo.gif" alt="ConvertEx demo"><br>
 </div>
 
